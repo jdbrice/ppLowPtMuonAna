@@ -20,8 +20,6 @@
 // #include "FemtoDstSkimmer/MtdHistogramMaker.h"
 
 #include "Filters/TrackFilter.h"
-#include "Filters/MtdFilter.h"
-#include "Filters/EventFilter.h"
 
 #include <map>
 
