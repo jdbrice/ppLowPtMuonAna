@@ -10,7 +10,7 @@
 		</input>
 
 		<output>
-			<TFile url="out/data.root" />
+			<TFile url="out/data_{jobIndex}.root" />
 		</output>
 
 		<!-- 
