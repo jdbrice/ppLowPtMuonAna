@@ -6,7 +6,7 @@
 	<FDS>
 		<EventLoop progress="true" />
 		<input>
-			<dst treeName="FemtoDst" url="./list.lis" splitBy="20" />
+			<dst treeName="FemtoDst" url="./list.lis" splitBy="2" />
 		</input>
 
 		<output>
