@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<Task name="FemtoDstSkimmer" type="FemtoDstSkimmer" config="" nodePath="FDS" />
+
+	<mod>PID_</mod>
+	<FDS>
+		<EventLoop progress="true" />
+		<input>
+			<dst treeName="FemtoDst" url="./list.lis" splitBy="10" maxFiles="1" nEvents="2000"/>
+		</input>
+
+		<output>
+			<TFile url="out/data.root" />
+		</output>
+
+		<!-- 
+			0  = 75-80
+			1  = 70-75
+			2  = 65-70
+			3  = 60-65
+			4  = 55-60
+			5  = 50-55
+			6  = 45-50
+			7  = 40-45
+			8  = 35-40
+			9  = 30-35
+			10 = 25-30
+			11 = 20-25
+			12 = 15-20
+			13 = 10-15
+			14 = 5-10
+			15 = 0-5
+
+		 -->
+		<CentralityMap>
+			0 :: 0,
+			1 :: 0,
+			2 :: 0,
+			3 :: 0,
+			4 :: 0,
+			5 :: 0,
+			6 :: 0,
+			7 :: 0,
+			8 :: 1,
+			9 :: 1,
+			10 :: 1,
+			11 :: 1,
+			12 :: 2,
+			13 :: 2,
+			14 :: 3,
+			15 :: 3
+		</CentralityMap>
+
+		<histograms>
+			<Histo name="Events" title="# of Events" bins_x="bins.events" />
+			<Histo name="mBin16" title="# of Event vs. Centrality; bin16; dN/dbin16" bins_x="bins.mBin16" />
+
+			<Histo name="zd" title="; n#sigma_{#pi}; dN/dn#sigma_{#pi}"  bins_x="bins.zd" />
+			<Histo name="zb" title="; n#sigma_{#pi}; dN/dn#sigma_{#pi}"  bins_x="bins.zb" />
+
+			<Histo name="zd_pT" title="; p_{T} (GeV/c); n#sigma_{#pi}" bins_x="bins.signal_mPt" bins_y="bins.zd" />
+			<Histo name="zb_pT" title="; p_{T}; 1/#beta " bins_x="bins.signal_mPt" bins_y="bins.zb" />
+
+		</histograms>
+
+
+		<TrackFilter>
+			<Range name="pT" min="0" max="0.5" />
+			<Range name="eta" min="-0.5" max="0.5" />
+			<Range name="nSigmaPion" min="-300.5" max="300.5" />
+			
+			<Range name="nHitsFit" min="15.0" max="50" />
+			<Range name="nHitsRatio" min="0.52" max="50" />
+			<Range name="nHitsDedx" min="15.0" max="50"/>
+			<Range name="dca" min="0" max="3.0" />
+		</TrackFilter>
+	</FDS>
+
+
+	<TrackHistogramMaker>
+		<Include url="TrackHistogramMaker.xml" />
+	</TrackHistogramMaker>
+
+	<bins>
+		<Include url="TrackBins.xml" />
+		<events type="l">All, Trigger, VPD</n>
+		<mBin16 width="1" min="0" max="16" />
+
+		<signal_mPt width="0.010" min="0" max="0.6" />
+		<signal_mEta width="0.2" min="-0.1" max="0.1" />
+		<signal_cen width="1" min="0" max="4" />
+		<zd width="0.01" min="-4" max="4" />
+		<zb width="0.005" min="0.8" max="1.5" />
+		
+	</bins>
+
+</config>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<histograms dir="track">
+		<Histo prefixes="pos_, neg_, " name="mPt" titles="Positive, Negative, All" x="p_{T} (GeV/c)" y="dN/dp_{T} (GeV/c)^{-1}" bins_x="bins.mPt" /> 
+		<Histo prefixes="pos_, neg_, " name="mEta" x="#eta" y="dN/d#eta" titles="Positive, Negative, All" bins_x="bins.mEta" /> 
+		<Histo prefixes="pos_, neg_, " name="mPhi" x="#phi" y="dN/d#phi" titles="Positive, Negative, All" bins_x="bins.mPhi" /> 
+		<Histo prefixes="pos_, neg_, " name="mId" x="mId" y="dN/dmId" titles="Positive, Negative, All" bins_x="bins.mId" /> 
+		<Histo prefixes="pos_, neg_, " name="mDedx" x="dEdX" y="dN/ddEdX" titles="Positive, Negative, All" bins_x="bins.mDedx" /> 
+		<Histo prefixes="pos_, neg_, " name="mNHitsFit" x="nHitsFit" y="dN/dnHitsFit" titles="Positive, Negative, All" bins_x="bins.mNHitsFit" /> 
+		<Histo prefixes="pos_, neg_, " name="mNHitsMax" x="nHitsMax" y="dN/dnHitsMax" titles="Positive, Negative, All" bins_x="bins.mNHitsMax" /> 
+		<Histo prefixes="pos_, neg_, " name="mNHitsDedx" x="nHistDedx" y="dN/dnHistDedx" titles="Positive, Negative, All" bins_x="bins.mNHitsDedx" /> 
+		<Histo prefixes="pos_, neg_, " name="mNSigmaPion" x="n#sigma_{#pion}" y="dN/dn#sigma_{#pion}" titles="Positive, Negative, All" bins_x="bins.mNSigmaPion" /> 
+		<Histo prefixes="pos_, neg_, " name="mNSigmaKaon" x="n#sigma_{K}" y="dN/dn#sigma_{K}" titles="Positive, Negative, All" bins_x="bins.mNSigmaKaon" /> 
+		<Histo prefixes="pos_, neg_, " name="mNSigmaProton" x="n#sigma_{p}" y="dN/dn#sigma_{p}" titles="Positive, Negative, All" bins_x="bins.mNSigmaProton" /> 
+		<Histo prefixes="pos_, neg_, " name="mNSigmaElectron" x="n#sigma_{e}" y="dN/dn#sigma_{e}" titles="Positive, Negative, All" bins_x="bins.mNSigmaElectron" /> 
+		<Histo prefixes="pos_, neg_, " name="mDCA" x="DCA (cm)" y="dN/dDCA (cm)^{-1}" titles="Positive, Negative, All" bins_x="bins.mDCA" /> 
+		<Histo prefixes="pos_, neg_, " name="mHelixDCA" x="DCA (cm)" y="dN/dDCA (cm)^{-1}" titles="Positive, Negative, All" bins_x="bins.mHelixDCA" /> 
+		
+		<Histo name="nNeg_nPos" title=";# pos; # neg" bins_x="bins.n" bins_y="bins.n" />
+	</histograms>
+
+</config>

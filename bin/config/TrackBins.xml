@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<mPt width="0.010" min="0" max="10" />
+	<mEta width="0.01" min="-2" max="2" />
+	<mPhi width="0.01" min="-3.15" max="3.15" />
+	<mId width="1" min="0" max="500" />
+	<mDedx width="0.025" min="0" max="10" />
+	<mNHitsFit width="1" min="-50" max="50" />
+	<mNHitsMax width="1" min="0" max="50" />
+	<mNHitsDedx width="1" min="0" max="50" />
+	<mNSigmaPion width="0.25" min="-6" max="6" />
+	<mNSigmaKaon width="0.25" min="-4" max="7" />
+	<mNSigmaProton width="0.25" min="-5" max="5" />
+	<mNSigmaElectron width="0.25" min="-10" max="0" />
+	<mDCA width="0.025" min="0" max="10" />
+	<mHelixDCA width="0.0001" min="0" max="0.05" />
+	<n width="1" min="0" max="10" />
+</config>
