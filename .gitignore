@@ -5,3 +5,8 @@
 *.lis
 *.root
 *Export
+bin/pairAna.app
+bin/out/*
+bin/out
+bin/log
+bin/*.pdf

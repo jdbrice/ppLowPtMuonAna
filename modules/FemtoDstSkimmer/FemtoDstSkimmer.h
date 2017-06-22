@@ -21,6 +21,8 @@
 
 #include "Filters/TrackFilter.h"
 
+#include "FemtoDstSkimmer/TofGenerator.h"
+
 #include <map>
 
 #define LOGURU_WITH_STREAMS 1
@@ -42,6 +44,13 @@ protected:
 
 	HistoBins hbPt, hbEta, hbCen;
 	map<int, int> cMap;
+
+	TofGenerator tofGen;
+
+	double rTof( double zb, double p, double m ){
+		double zbp = zb - tofGen.mean( p, m );
+		return zbp;
+	}
 
 
 public:
@@ -67,9 +76,9 @@ public:
 		book->cd();
 
 
-		hbPt.load( config, "bins.signal_mPt" );
-		hbEta.load( config, "bins.signal_mEta" );
-		hbCen.load( config, "bins.signal_cen" );
+		hbPt.load( config, "bins.signal.mP" );
+		hbEta.load( config, "bins.signal.mEta" );
+		hbCen.load( config, "bins.signal.mCen" );
 
 		cMap = config.getIntMap( nodePath + ".CentralityMap" );
 		for ( int i = 0; i < 16; i++ )
@@ -109,8 +118,11 @@ protected:
 						string bn = bin_name( iCen, iEta, iCharge );
 						LOG_F( INFO, "Making histo : %s", bn.c_str() );
 
-						book->clone( "zd_pT", "zd_pT_" + bn );
-						book->clone( "zb_pT", "zb_pT_" + bn );
+						book->clone( "zd_p", "zd_p_" + bn );
+						book->clone( "zb_p", "zb_p_" + bn );
+
+						// book->clone( "yLocal_p", "yLocal_p_" + bn );
+						// book->clone( "zLocal_p", "zLocal_p_" + bn );
 					}
 				}
 			}
@@ -140,11 +152,21 @@ protected:
 			if ( iEta < 0 ) continue;
 			string tname = bin_name( mappedCen, iEta, _proxy._track->charge() );
 
-			book->fill( "zd_pT", _proxy._track->mPt, _proxy._track->nSigmaPion() );
-			book->fill( "zb_pT", _proxy._track->mPt, 1.0/_proxy._btofPid->beta() );
 
-			book->fill( "zd_pT_" + tname, _proxy._track->mPt, _proxy._track->nSigmaPion() );
-			book->fill( "zb_pT_" + tname, _proxy._track->mPt, 1.0/_proxy._btofPid->beta() );
+			if ( fabs(_proxy._btofPid->yLocal()) > 1.6 ) continue;
+			if ( fabs(_proxy._btofPid->zLocal()) > 2.8 ) continue;
+
+			double p = _proxy._track->mPt * cosh( _proxy._track->mEta );
+			double zb = rTof( 1.0/_proxy._btofPid->beta(), p, 0.105658374 );
+
+			book->fill( "zd_p", p, _proxy._track->nSigmaPion() );
+			book->fill( "zb_p", p, zb );
+
+			book->fill( "zd_p_" + tname, p, _proxy._track->nSigmaPion() );
+			book->fill( "zb_p_" + tname, p, zb );
+
+			book->fill( "yLocal_p", p, _proxy._btofPid->yLocal() );
+			book->fill( "zLocal_p", p, _proxy._btofPid->zLocal() );
 
 		}
 	}

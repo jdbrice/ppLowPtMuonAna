@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<Task name="Fitter" type="Fitter" config="" nodePath="Fitter" />
+
+	<Fitter>
+		<input>
+			<TFile url="out/data_0.root" />
+		</input>
+
+		<output>
+			<TFile url="out/fits.root" />
+			<TFile url="out/fit_params/xml" name="fit_params" />
+		</output>
+
+		<Include url="GaussianSchema.xml" />
+		<!-- <Include url="PearsonSchema.xml" /> -->
+
+	</Fitter>
+
+	<bins>
+		<Include url="SignalBins.xml" />
+	</bins>
+
+</config>

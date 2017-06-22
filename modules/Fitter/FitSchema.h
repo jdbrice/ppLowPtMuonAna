@@ -1,0 +1,135 @@
+#ifndef TSF_FIT_SCHEMA_H
+#define TSF_FIT_SCHEMA_H
+
+// RooBarb
+#include "XmlConfig.h"
+using namespace jdb;
+
+// Local
+#include "Fitter/FitVar.h"
+#include "Fitter/GaussianModel.h"
+#include "Fitter/BaseModel.h"
+#include "Fitter/PearsonModel.h"
+#include "Fitter/PolyModel.h"
+#include "Fitter/FitDataset.h"
+#include "Fitter/FitRange.h"
+
+// STL
+#include <vector>
+#include <map>
+#include <memory>
+#include <utility>
+
+//ROOT
+#include "TH1.h"
+
+
+class FitSchema
+{
+protected:
+	XmlConfig cfg;
+	string nodePath;
+
+	int nPars = 0;
+
+	string method;
+	bool extended = false;
+
+	bool fitInRange = false;
+	vector<FitRange> ranges;
+
+	double normalization;
+
+	int verbosity;
+
+	map<string, shared_ptr<FitVar> > vars;
+
+	static constexpr auto tag = "FitSchema";
+
+public:
+	FitSchema( XmlConfig &_cfg, string np );
+
+	~FitSchema();
+
+	FitSchema( const FitSchema &other );
+
+	
+	map<string, shared_ptr<BaseModel> > models;
+	map<string, FitDataset > datasets;
+
+	shared_ptr<FitVar> var( string name ) {
+		if ( vars.count( name ) ){
+			return vars[ name ];
+		} 
+		WARN( tag, name << " DNE" )
+		return shared_ptr<FitVar>( new FitVar( "DNE", 0, 0, 0, 0 ) );
+	}
+
+	map<string, shared_ptr<FitVar> > getVars() { return vars; }
+
+	bool exists( string name ) { return  vars.count( name ) >= 1; }
+
+	void setMethod( string m = "chi2" ) { method = m; }
+	string getMethod() { return method; }
+
+	void makeFitVars();
+	void makeModels();
+	void makeGauss( string path );
+	void updateModels( );
+
+	void loadDataset( string ds, TH1 * h );
+
+	int numParams() { return nPars; }
+
+	void reportModels();
+
+	void clearDatasets(){ datasets.clear(); }
+	bool datasetActive( string dsName ){
+		if ( datasets.find( dsName ) != datasets.end() )
+			return true;
+		return false;
+	}
+
+
+	void setInitialMu( string var, double _mu, double _sigma, double _dmu );
+	void setInitialMuLimits( string var, double _mu, double _sigma, double _dmu );
+	void setInitialMuLimits( string var, double _min, double _max );
+	void setInitialSigma( string var, double _sigma, double _dsig );
+	void setInitialSigma( string var, double _sigma, double _min, double _max );
+	void fixParameter( string var, double val, bool fixed = true );
+	void setYieldRange( string var, double low, double high );
+
+	// Fit Ranges
+	void addRange( string dataset, double _min, double _max, string centerOn = "", string widthFrom = "", double roi = 1.0 );
+	void updateRanges( double roi = -1);
+	void clearRanges(  );
+	bool constrainFitRange() { return fitInRange; }
+	void useFitRange( bool fr = true ) { fitInRange = fr; }
+	bool inRange( string ds, double x );
+	void reportFitRanges();
+
+	void setNormalization( double n) {
+		normalization = n;
+	}
+	double getNormalization(){
+		return normalization;
+	}
+
+	vector<FitRange> & getRanges() {
+		return ranges;
+	}
+
+	double enforceMassOrdering(){ return 1.0;};
+
+	int getVerbosity() const { return verbosity; }
+
+	bool tofEff() const { return vars.count( "eff_Pi") >= 1;}
+
+	bool extendedFit(  ) const { return extended; }
+	void setExtended( bool efit = true ) { extended = efit; }
+
+};
+
+
+
+#endif
