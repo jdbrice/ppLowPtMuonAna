@@ -97,11 +97,12 @@ public:
 	void setInitialSigma( string var, double _sigma, double _dsig );
 	void setInitialSigma( string var, double _sigma, double _min, double _max );
 	void fixParameter( string var, double val, bool fixed = true );
+	void fixParameter( string var );
 	void setYieldRange( string var, double low, double high );
 
 	// Fit Ranges
-	void addRange( string dataset, double _min, double _max, string centerOn = "", string widthFrom = "", double roi = 1.0 );
-	void updateRanges( double roi = -1);
+	void addRange( string dataset, double _min, double _max, string centerOn = "", string widthFrom = "", double roiLeft = 1.0, double roiRight = 1.0 );
+	void updateRanges();
 	void clearRanges(  );
 	bool constrainFitRange() { return fitInRange; }
 	void useFitRange( bool fr = true ) { fitInRange = fr; }

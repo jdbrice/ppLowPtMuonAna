@@ -9,6 +9,7 @@
 
 #include "XmlConfig.h"
 #include "XmlRange.h"
+#include "HistoBins.h"
 
 // FemtoDst
 #include "FemtoDstFormat/FemtoTrackProxy.h"
@@ -20,20 +21,30 @@
 
 class LowPtMuonFilter {
 public:
-	LowPtMuonFilter() {}
-	LowPtMuonFilter(XmlConfig &_cfg, string _nodePath) {
+
+	ZbRC zbUtil;
+	HistoBins momentumBins;
+
+	LowPtMuonFilter() : zbUtil( 0.014) {}
+	LowPtMuonFilter(XmlConfig &_cfg, string _nodePath) : zbUtil( 0.014) {
 		load( _cfg, _nodePath );
 	}
 	~LowPtMuonFilter() {}
 
 	void load( XmlConfig &_cfg, string _nodePath ){
 		vector<string> rngPaths=_cfg.childrenOf( _nodePath, "Range" );
+
+		zbUtil = _cfg.get<ZbRC>( _nodePath + ".ZbRC" );
+
 		for ( auto p : rngPaths ){
 			XmlRange rng( _cfg, p );
 
 			range[ _cfg[ p + ":name" ] ] = rng;
 			LOG_F( INFO, "[%s] = %s", _cfg[(p+":name")].c_str(), rng.toString().c_str() );
 		}
+
+		momentumBins = HistoBins(_cfg, _cfg.getString(_nodePath + ".MomentumBins") );
+		LOG_F( INFO, "MomentumBins=%s", momentumBins.toString().c_str() );
 
 	}
 
@@ -42,13 +53,7 @@ public:
 
 	bool pass( FemtoTrackProxy &_proxy ){
 
-		double nHitsRatio = fabs(_proxy._track->mNHitsFit) / _proxy._track->mNHitsMax;
-
-		if ( range.count( "nSigmaPion" ) && !range["nSigmaPion"].inInclusiveRange( _proxy._track->nSigmaPion() ) )
-			return false;
-
-		
-
+		double p = _proxy._track->mPt * cosh( _proxy._track->mEta );
 
 		return true;
 	}

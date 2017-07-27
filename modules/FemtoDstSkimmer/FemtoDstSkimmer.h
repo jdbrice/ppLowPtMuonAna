@@ -22,6 +22,7 @@
 #include "Filters/TrackFilter.h"
 
 #include "FemtoDstSkimmer/TofGenerator.h"
+#include "ZRC/ZbRC.h"
 
 #include <map>
 
@@ -42,7 +43,7 @@ protected:
 	bool trackQA = false;
 	TrackFilter _trackFilter;
 
-	HistoBins hbPt, hbEta, hbCen;
+	HistoBins hbP, hbEta, hbCen;
 	map<int, int> cMap;
 
 	TofGenerator tofGen;
@@ -52,10 +53,12 @@ protected:
 		return zbp;
 	}
 
+	ZbRC zbUtil;
+
 
 public:
 	virtual const char* classname() const {return "FemtoDstSkimmer";}
-	FemtoDstSkimmer() {}
+	FemtoDstSkimmer() : zbUtil(0.014) {}
 	~FemtoDstSkimmer() {}
 
 	virtual void initialize(){
@@ -76,7 +79,7 @@ public:
 		book->cd();
 
 
-		hbPt.load( config, "bins.signal.mP" );
+		hbP.load( config, "bins.signal.mP" );
 		hbEta.load( config, "bins.signal.mEta" );
 		hbCen.load( config, "bins.signal.mCen" );
 
@@ -84,7 +87,7 @@ public:
 		for ( int i = 0; i < 16; i++ )
 			LOG_F( INFO, "cMap[%d] = %d", i, cMap[i] );
 
-		
+		zbUtil = config.get<ZbRC>( "ZbRC" );
 
 
 	}
@@ -111,7 +114,7 @@ protected:
 		book->cd();
 
 
-		//for ( int iPt = 0; iPt < hbPt.nBins(); iPt++ ){
+		//for ( int iPt = 0; iPt < hbP.nBins(); iPt++ ){
 			for ( int iEta = 0; iEta < hbEta.nBins(); iEta++ ){
 				for ( int iCen = 0; iCen < hbCen.nBins(); iCen++ ){
 					for ( int iCharge : { -1, 1 } ) {
@@ -138,8 +141,10 @@ protected:
 
 		int mappedCen = cMap[ _event->mBin16 ];
 		
+		if ( mappedCen < 0  ) return;
 		size_t nTracks = _rTracks.N();
 		FemtoTrackProxy _proxy;
+
 		for (size_t i = 0; i < nTracks; i++ ){
 			_proxy.assemble( i, _rTracks, _rHelices, _rBTofPid );
 
@@ -157,10 +162,19 @@ protected:
 			if ( fabs(_proxy._btofPid->zLocal()) > 2.8 ) continue;
 
 			double p = _proxy._track->mPt * cosh( _proxy._track->mEta );
-			double zb = rTof( 1.0/_proxy._btofPid->beta(), p, 0.105658374 );
+			double lzb = rTof( 1.0/_proxy._btofPid->beta(), p, 0.105658374 );
+
+			int pBin = hbP.findBin( p );
+			if ( pBin < 0 ) continue;
+			double avgP = hbP.bins[ pBin ] + hbP.binWidth( pBin ) / 2.0;
+
+			double zb = zbUtil.nlTof( "mu", _proxy._btofPid->beta(), p, avgP );
+			// LOG_F( INFO, "p=%f, avgP{bin}=%f", p, avgP );
 
 			book->fill( "zd_p", p, _proxy._track->nSigmaPion() );
 			book->fill( "zb_p", p, zb );
+
+			book->fill( "lzb_p", p, lzb );
 
 			book->fill( "zd_p_" + tname, p, _proxy._track->nSigmaPion() );
 			book->fill( "zb_p_" + tname, p, zb );

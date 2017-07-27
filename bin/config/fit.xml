@@ -2,9 +2,13 @@
 <config>
 	<Task name="Fitter" type="Fitter" config="" nodePath="Fitter" />
 
+
+	<pi roiLeft="3" roiRight="1"/>
+	<mu roiLeft="2" roiRight="1" />
+	
 	<Fitter>
 		<input>
-			<TFile url="out/data_0.root" />
+			<TFile url="out/all.root" />
 		</input>
 
 		<output>
@@ -12,13 +16,30 @@
 			<TFile url="out/fit_params/xml" name="fit_params" />
 		</output>
 
-		<Include url="GaussianSchema.xml" />
-		<!-- <Include url="PearsonSchema.xml" /> -->
+		<!-- <Include url="GaussianSchema.xml" /> -->
+		<Include url="PearsonSchema.xml" />
+
+		<histograms>
+		</histograms>
 
 	</Fitter>
+
+	<Canvas cols="24" rows="24" width="1024" height="1600">
+		<Pad gx="0, 24" gy="6, 24" m="0.05, 0.05, 0.00, 0.13" name="fit">
+
+		</Pad>
+		<Pad gx="0, 24" gy="0, 7" m="0.041666, 0.05, 0.08, 0.13" name="ratio">
+		
+		</Pad>
+	</Canvas>
 
 	<bins>
 		<Include url="SignalBins.xml" />
 	</bins>
+
+	<style>
+		<ratio xts="0.1" yts="0.1" yto="0.5" xto="0.95" xls="0.1" yls="0.05" yticks="10, 2, 0" yr="0.5, 1.5" y="data / fit " />
+		<fit_param yto="2.0" logy="0" xlo="-0.01" />
+	</style>
 
 </config>

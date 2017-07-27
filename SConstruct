@@ -16,7 +16,7 @@ SConscript( "modules/FemtoDstFormat/SConstruct" )
 # SConscript( "modules/ProductionUtils/SConstruct")
 
 env.Append(CPPPATH    = [ "modules/" ])
-env.Append(CXXFLAGS   = ['-std=c++11', '-O3', '-DJDB_LOG_LEVEL=0'])
+env.Append(CXXFLAGS   = ['-std=c++11', '-g', '-DJDB_LOG_LEVEL=0'])
 JDB_LIB = os.environ.get("JDB_LIB", "" )
 env.Append(LIBPATH    = [ JDB_LIB + "/lib/" ] )
 env.Append(LIBS       = [ "Minuit", "libRooBarbCore.a", "libRooBarbConfig.a", "libRooBarbTasks.a", "libRooBarbRootAna.a", "libRooBarbUnitTest.a", "libRooBarbExtra.a" ] )
@@ -36,4 +36,4 @@ env[ "_LIBFLAGS" ] = env[ "_LIBFLAGS" ] + " " + ROOTLIBS + " "
 if "Darwin" in platform.platform() :
 	env[ "LINKFLAGS" ].remove( "-pthread" )
 
-env.Program( target="bin/pairAna.app", source=[ "modules/FemtoDstFormat/DictionaryFemtoDst.cpp", "Engine.cpp", "modules/Fitter/FitSchema.cpp", "modules/Fitter/TMinuitFitter.cpp"] )
+env.Program( target="bin/pairAna.app", source=[ "modules/FemtoDstFormat/DictionaryFemtoDst.cpp", "Engine.cpp", "modules/Fitter/FitSchema.cpp", "modules/Fitter/TMinuitFitter.cpp", "modules/ZRC/ZbRC.cpp"] )

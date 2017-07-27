@@ -1,6 +1,6 @@
 #include "Fitter/FitSchema.h"
 
-
+#define LOGURU_WITH_STREAMS 1
 #include "vendor/loguru.h"
 
 
@@ -235,43 +235,44 @@ void FitSchema::setInitialSigma( string var, double _sigma, double _min, double 
 
 }
 
+void FitSchema::fixParameter( string var ){
+	if ( !exists( var ) ){
+		return;
+	}
+	vars[ var ]->fixed = true;
+}
+
 void FitSchema::fixParameter( string var, double val, bool fixed ){
 	if ( !exists( var ) ){
-
 		return;
 	}
 	vars[ var ]->val = val;
 	vars[ var ]->fixed = fixed;
-
 }
 
 
-void FitSchema::addRange( string ds, double min, double max, string centerOn, string widthFrom, double roi ){
+void FitSchema::addRange( string ds, double min, double max, string centerOn, string widthFrom, double roiLeft, double roiRight ){
 
-	FitRange fr( ds, min, max, centerOn, widthFrom, roi );
+	FitRange fr( ds, min, max, centerOn, widthFrom, roiLeft, roiRight );
 	ranges.push_back( fr );
 
 	fitInRange = true;
 }
 
 
-void FitSchema::updateRanges( double roi ){
+void FitSchema::updateRanges( ){
 
 
 	for ( FitRange &r : ranges ){
 
 		if ( exists( r.centerOn ) && exists( r.widthFrom ) ){
 
-			if ( roi < 0 ){
-				r.min = var( r.centerOn )->val - var( r.widthFrom )->val * r.roi;
-				r.max = var( r.centerOn )->val + var( r.widthFrom )->val * r.roi;
-			} else if ( r.dataset == "zd_All" || r.dataset == "zb_All" ){
-				DEBUG( tag, "Overriding ROI" )
-				r.min = var( r.centerOn )->val - var( r.widthFrom )->val * roi;
-				r.max = var( r.centerOn )->val + var( r.widthFrom )->val * roi;
-			}
+			r.min = var( r.centerOn )->val - var( r.widthFrom )->val * r.roiLeft;
+			r.max = var( r.centerOn )->val + var( r.widthFrom )->val * r.roiRight;
 
-			DEBUG( tag, "Updating Range " << r.centerOn << " +- " << r.widthFrom << "(" << r.min << ", " << r.max << " )"  )
+			LOG_S(0) << "Updating Range " << r.centerOn << " +- " << r.widthFrom << "(" << r.min << ", " << r.max << " )" ;
+		} else {
+			LOG_S(INFO) << "Invalid range ";
 		}
 	}
 }

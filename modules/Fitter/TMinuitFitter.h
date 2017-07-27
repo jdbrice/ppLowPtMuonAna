@@ -93,11 +93,14 @@ public:
 		string status = "na";
 
 		minuit->mnexcm( "MINI", arglist, 1, iFlag );
+		// minuit->mnexcm( "MINI", arglist, 1, iFlag );
 		status = minuit->fCstatu;
 
 
 		updateParameters();
 	}
+
+	
 
 	void setupFit(){
 		minuit = unique_ptr<TMinuit>( new TMinuit( schema->numParams() ) );
@@ -254,7 +257,21 @@ public:
 		TGraph * graph = new TGraph( vx.size(), vx.data(), vy.data() );
 		return graph;
 	}
-	
+
+
+	void fix( string var){
+
+		// loop over parameters
+		for ( int i = 0; i < parNames.size(); i++ ){
+
+			bool shouldFix = false;
+			if ( string::npos != parNames[ i ].find( var ) )
+				shouldFix = true;
+
+			if ( shouldFix )
+				minuit->FixParameter( i );
+		} // i
+	}
 };
 
 

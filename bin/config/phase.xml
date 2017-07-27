@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<Task name="PhaseSpaceMC" type="PhaseSpaceMC" config="" nodePath="PhaseSpaceMC" />
+	
+	<p>
+		<N>1000000</N>
+	</p>
+
+	<PhaseSpaceMC>
+		<input>
+			<TFile url="out/all.root" />
+		</input>
+
+		<output>
+			<TFile url="out/phase_space.root" />
+		</output>
+
+		<histograms>
+			<Histo name="PS_TOF_TOF" title="TOF + TOF; M_{#mu#mu} (GeV/c^{2}); p_{T}^{#mu#mu} (GeV/c)" bins_x="bins.Mass" bins_y="bins.Pt" />
+			<Histo name="PS_TOF_MTD" title="TOF + MTD; M_{#mu#mu} (GeV/c^{2}); p_{T}^{#mu#mu} (GeV/c)" bins_x="bins.Mass" bins_y="bins.Pt" />
+			<Histo name="PS_MTD_MTD" title="MTD + MTD; M_{#mu#mu} (GeV/c^{2}); p_{T}^{#mu#mu} (GeV/c)" bins_x="bins.Mass" bins_y="bins.Pt" />
+		</histograms>
+
+	</PhaseSpaceMC>
+
+	<bins>
+		<Mass width="0.01" min="0" max="10" />
+		<Pt width="0.01" min="0" max="10" />
+	</bins>
+
+	<style>
+		
+	</style>
+
+</config>

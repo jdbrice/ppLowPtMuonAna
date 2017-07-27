@@ -14,7 +14,7 @@ public:
 
 	// for dynamically tracking a variable in the fit
 	string centerOn, widthFrom;
-	double roi;
+	double roiLeft, roiRight;
 
 
 	FitRange( string ds, double _min, double _max, string centerOn = "", string widthFrom = "", double roi = 1.0 ){
@@ -25,7 +25,19 @@ public:
 
 		this->centerOn = centerOn;
 		this->widthFrom = widthFrom;
-		this->roi = roi;
+		this->roiLeft = roi;
+		this->roiRight = roi;
+	}
+	FitRange( string ds, double _min, double _max, string centerOn = "", string widthFrom = "", double roiLeft = 1.0, double roiRight = 1.0 ){
+
+		dataset = ds;
+		min = _min;
+		max = _max;
+
+		this->centerOn = centerOn;
+		this->widthFrom = widthFrom;
+		this->roiLeft = roiLeft;
+		this->roiRight = roiRight;
 	}
 
 	FitRange( const FitRange &other ){
@@ -35,7 +47,8 @@ public:
 
 		this->centerOn = other.centerOn;
 		this->widthFrom = other.widthFrom;
-		this->roi = other.roi;
+		this->roiLeft = other.roiLeft;
+		this->roiRight = other.roiRight;
 	}
 
 	
@@ -51,7 +64,7 @@ public:
 		if ( "" == centerOn || "" == widthFrom )
 			return "( " + dts(min) + " < " + dataset + " < " + dts(max) + " )";
 		else 
-			return "( " + dts(min) + " < " + dataset + " < " + dts(max) + " ) Tracking " + centerOn + " +/- " + widthFrom + " * " + dts(roi) ;
+			return "( " + dts(min) + " < " + dataset + " < " + dts(max) + " ) Tracking " + centerOn + " +/- " + widthFrom + " * (" + dts(roiLeft) + ", " + dts(roiRight) + ")" ;
 	}
 	
 };	

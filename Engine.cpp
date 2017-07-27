@@ -11,6 +11,8 @@ using namespace jdb;
 
 
 #include "FemtoDstSkimmer/FemtoDstSkimmer.h"
+#include "MuonPairMaker/MuonPairMaker.h"
+#include "PhaseSpaceExplorer/PhaseSpaceMC.h"
 #include "Fitter/Fitter.h"
 // #include "CorrectedSpectra/CorrectedSpectraMaker.h"
 
@@ -22,6 +24,8 @@ int main( int argc, char* argv[] ) {
 
 
 	TaskFactory::registerTaskRunner<FemtoDstSkimmer>( "FemtoDstSkimmer" );
+	TaskFactory::registerTaskRunner<MuonPairMaker>( "MuonPairMaker" );
+	TaskFactory::registerTaskRunner<PhaseSpaceMC>( "PhaseSpaceMC" );
 	TaskFactory::registerTaskRunner<Fitter>( "Fitter" );
 	// TaskFactory::registerTaskRunner<CorrectedSpectraMaker>( "CorrectedSpectraMaker" );
 

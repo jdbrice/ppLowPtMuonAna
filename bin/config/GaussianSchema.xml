@@ -2,18 +2,18 @@
 <config>
 
 	<Schema method="chi2" roi="3" >
-		<FitVar name="zb_mu_Pi" value="0.25"  min="0.0" max="0.3" error=".001"/>
-		<FitVar name="zb_mu_Mu" value="0.05"  min="-0.1" max="0.08" error=".001"/>
+		<FitVar name="pi_lambda" value="0.25"  min="0.0" max="0.3" error=".001"/>
+		<FitVar name="mu_lambda" value="0.05"  min="-0.1" max="0.08" error=".001"/>
 
-		<FitVar name="zb_sigma_Pi" value=".01" min="0.006" max=".02" error=".001"/>
-		<FitVar name="zb_sigma_Mu" value=".01" min="0.006" max=".02" error=".001"/>
+		<FitVar name="pi_sigma" value=".01" min="0.006" max=".02" error=".001"/>
+		<FitVar name="mu_sigma" value=".01" min="0.006" max=".02" error=".001"/>
 
-		<FitVar name="yield_Pi" value="800"  error="1" 	 min="0" max="10e9" />
-		<FitVar name="yield_Mu" value="200"  error="1" 	 min="0" max="10e9" />
+		<FitVar name="pi_yield" value="800"  error="1" 	 min="0" max="10e9" />
+		<FitVar name="mu_yield" value="200"  error="1" 	 min="0" max="10e9" />
 
 		<Model name="zb" dataset="zb" >
-			<GaussModel name="gPi" mu="zb_mu_Pi" sigma="zb_sigma_Pi" yield="yield_Pi" />
-			<GaussModel name="gMu" mu="zb_mu_Mu" sigma="zb_sigma_Mu" yield="yield_Mu" />
+			<GaussModel name="gPi" mu="pi_lambda" sigma="pi_sigma" yield="pi_yield" />
+			<GaussModel name="gMu" mu="mu_lambda" sigma="mu_sigma" yield="mu_yield" />
 		</Model>
 
 	</Schema>
