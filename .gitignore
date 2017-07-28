@@ -10,3 +10,7 @@ bin/out/*
 bin/out
 bin/log
 bin/*.pdf
+.vscode/
+.clang_complete
+*.png
+macro/

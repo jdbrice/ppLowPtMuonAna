@@ -37,7 +37,7 @@ protected:
 	TClonesArrayReader<FemtoTrack> _rTracks;
 	TClonesArrayReader<FemtoTrackHelix> _rHelices;
 	TClonesArrayReader<FemtoBTofPidTraits> _rBTofPid;
-	TClonesArrayReader<FemtoBTofPidTraits> _rMtdPid;
+	TClonesArrayReader<FemtoMtdPidTraits> _rMtdPid;
 
 	TrackFilter _trackFilter;
 	LowPtMuonFilter _lowFilter;
@@ -57,15 +57,15 @@ public:
 		_rBTofPid.setup( chain, "BTofPidTraits" );
 		_rMtdPid.setup( chain, "MtdPidTraits" );
 
-		// _trackFilter.load( config, nodePath + ".TrackFilter" );
+		_trackFilter.load( config, nodePath + ".TrackFilter" );
 
-		// cMap = config.getIntMap( nodePath + ".CentralityMap" );
-		// for ( int i = 0; i < 16; i++ )
-		// 	LOG_F( INFO, "cMap[%d] = %d", i, cMap[i] );
+		cMap = config.getIntMap( nodePath + ".CentralityMap" );
+		for ( int i = 0; i < 16; i++ )
+			LOG_F( INFO, "cMap[%d] = %d", i, cMap[i] );
 
-		// _trackFilter.load( config, nodePath + ".TrackFilter" );
-		// _lowFilter.load( config, nodePath + ".LowPtMuonFilter" );
-		// book->cd();
+		_trackFilter.load( config, nodePath + ".TrackFilter" );
+		_lowFilter.load( config, nodePath + ".LowPtMuonFilter" );
+		book->cd();
 	}
 
 
@@ -82,25 +82,30 @@ protected:
 		book->fill( "Events", 1 );
 
 		
-		// if ( cMap.count( _event->mBin16 ) == 0 ) return;
-		// int mappedCen = cMap[ _event->mBin16 ];
-		// if (mappedCen < 0) return;
-		// // LOG_F( INFO, "cMap[ %d ] = %d", _event->mBin16, mappedCen );
-		// book->fill( "mBin16", _event->mBin16 );
-		// book->fill( "mMappedCen", mappedCen );
+		if ( cMap.count( _event->mBin16 ) == 0 ) return;
+		int mappedCen = cMap[ _event->mBin16 ];
+		if (mappedCen < 0) return;
+		// LOG_F( INFO, "cMap[ %d ] = %d", _event->mBin16, mappedCen );
+		book->fill( "mBin16", _event->mBin16 );
+		book->fill( "mMappedCen", mappedCen );
 		
-		// size_t nTracks = _rTracks.N();
-		// FemtoTrackProxy _proxy;
+		size_t nTracks = _rTracks.N();
+		FemtoTrackProxy _proxy;
 
-		// for (size_t i = 0; i < nTracks; i++ ){
-		// 	_proxy.assemble( i, _rTracks, _rHelices, _rBTofPid );
+		for (size_t i = 0; i < nTracks; i++ ){
+			_proxy.assemble( i, _rTracks, _rHelices, _rBTofPid );
 
-		// 	if ( _trackFilter.fail( _proxy ) ) continue;
-		// 	if ( nullptr == _proxy._btofPid ) continue;
-		// 	if ( _lowFilter.fail( _proxy ) ) continue;
+			if ( _trackFilter.fail( _proxy ) ) continue;
+			if ( nullptr == _proxy._btofPid ) continue;
+
+			double p = _proxy._track->mPt * cosh( _proxy._track->mEta );
+			book->fill( "zb_p", p, _lowFilter.zb( _proxy, "mu" ) );
+			if ( _lowFilter.fail( _proxy ) ) continue;
+
+			book->fill( "zb_p_signal", p, _lowFilter.zb( _proxy, "mu" ) );
 
 			
-		// }
+		}
 	}
 
 
