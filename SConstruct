@@ -36,4 +36,4 @@ env[ "_LIBFLAGS" ] = env[ "_LIBFLAGS" ] + " " + ROOTLIBS + " "
 if "Darwin" in platform.platform() :
 	env[ "LINKFLAGS" ].remove( "-pthread" )
 
-env.Program( target="bin/pairAna.app", source=[ "modules/FemtoDstFormat/DictionaryFemtoDst.cpp", "Engine.cpp", "modules/Fitter/FitSchema.cpp", "modules/Fitter/TMinuitFitter.cpp", "modules/ZRC/ZbRc.cpp"] )
+env.Program( target="bin/pairAna.app", source=[ "modules/FemtoDstFormat/DictionaryFemtoDst.cpp", "Engine.cpp", "modules/Fitter/FitSchema.cpp", "modules/Fitter/TMinuitFitter.cpp", "modules/ZRC/ZbRC.cpp"] )
