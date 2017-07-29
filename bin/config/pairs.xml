@@ -7,7 +7,7 @@
 	<MPM>
 		<EventLoop progress="true" />
 		<input>
-			<dst treeName="FemtoDst" url="./mtd_list.lis" splitBy="200"/>
+			<dst treeName="FemtoDst" url="./mtd_list.lis" splitBy="25"/>
 		</input>
 
 		<output>

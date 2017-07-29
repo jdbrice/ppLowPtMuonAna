@@ -10,4 +10,4 @@ Executable = /home/jdb12/work/LowPtMuonAna/bin/pairAna.app
 
 GetEnv     = True
 
-Queue 30
+Queue 54
