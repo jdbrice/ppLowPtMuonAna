@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+
+	<url></url>
+	<Data name="h" url="{url}" />
+	
+    <ext>png</ext>
+
+	<TLatex x="0.02" y="0.01" text="40-80% Au+Au 2014 @ 200 GeV" size="0.05"/>
+	<OptStats x1="0.1" x2="0.2" y1="0.11" y2="0.01" />
+	
+	 <PlotTemplate names="TH1:*" >
+
+		<Margins>0.01, 0.025, 0.1, 0.1</Margins>
+		<Histo name="{name}" style="style.{ClassName}">
+
+		</Histo>
+		<Export url="export/{uname}.{ext}" />
+	</PlotTemplate> 
+
+	<PlotTemplate names="TH2:*" >
+		<Margins>0.01, 0.1, 0.1, 0.1</Margins>
+		<Histo name="{name}" style="style.{ClassName}" />
+		<Export url="export/{uname}.{ext}" />
+	</PlotTemplate>
+
+
+	<style>
+		<TH1D draw="" linewidth="1" logy="1" optstat="10" fca="#0000FF, 0.3" xts="0.04" xto="1.1" yts="0.04" yto="1.1" min="0.001" />
+		<TH2D draw="colz" optstat="10" logy="0" logz="1" xts="0.04" xto="1.1"/>
+	</style>
+</config>

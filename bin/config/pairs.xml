@@ -58,10 +58,40 @@
 
 			<Histo name="zb_p" title="; p (GeV/c); 1/#beta " bins_x="bins.signal.mP" bins_y="bins.zb" />
 			<Histo name="zb_p_signal" title="; p (GeV/c); 1/#beta " bins_x="bins.signal.mP" bins_y="bins.zb" />
+
+			<Histo name="nTof_vs_nMtd" title=";nMTD; nTOF" bins_x="bins.nMuons" bins_y="bins.nMuons" />
+			<Histo name="uls_pt_mass" title=";M_{#mu#mu} (GeV/c^{2}); p_{T} (GeV/c)" bins_x="bins.mass" bins_y="bins.mass" />
+			<Histo name="ls_pt_mass" title=";M_{#mu#mu} (GeV/c^{2}); p_{T} (GeV/c)" bins_x="bins.mass" bins_y="bins.mass" />
+
+			<!-- MVA -->
+			<Histo name="BDT" title="BDT; likelihood;" bins_x="bins.likelihood" />
+			<Histo name="MLP" title="MLP; likelihood;" bins_x="bins.likelihood" />
+			<Histo name="MLP_vs_BDT" title="; BDT; MLP" bins_x="bins.likelihood" bins_y="bins.likelihood" />
+
+			<Histo name="dY_BDT" title=";lh; dY" bins_x="bins.likelihood" bins_y="bins.MVA_dY" />
+			<Histo name="dZ_BDT" title=";lh; dZ" bins_x="bins.likelihood" bins_y="bins.MVA_dZ" />
+			<Histo name="dTOF_BDT" title=";lh; dTOF" bins_x="bins.likelihood" bins_y="bins.MVA_dTOF" />
+			<Histo name="nSigmaPi_BDT" title=";lh; nSigmaPi" bins_x="bins.likelihood" bins_y="bins.MVA_nSigmaPi" />
+			<Histo name="nHitsFit_BDT" title=";lh; nHitsFit" bins_x="bins.likelihood" bins_y="bins.MVA_nHitsFit" />
+			<Histo name="dca_BDT" title=";lh; DCA" bins_x="bins.likelihood" bins_y="bins.MVA_DCA" />
+			<Histo name="cell_BDT" title=";lh; cell" bins_x="bins.likelihood" bins_y="bins.MVA_Cell" />
+			<Histo name="module_BDT" title=";lh; module" bins_x="bins.likelihood" bins_y="bins.MVA_Module" />
+			<Histo name="backleg_BDT" title=";lh; backleg" bins_x="bins.likelihood" bins_y="bins.MVA_Backleg" />
+
+			<Histo name="dY_MLP" title=";lh; dY" bins_x="bins.likelihood" bins_y="bins.MVA_dY" />
+			<Histo name="dZ_MLP" title=";lh; dZ" bins_x="bins.likelihood" bins_y="bins.MVA_dZ" />
+			<Histo name="dTOF_MLP" title=";lh; dTOF" bins_x="bins.likelihood" bins_y="bins.MVA_dTOF" />
+			<Histo name="nSigmaPi_MLP" title=";lh; nSigmaPi" bins_x="bins.likelihood" bins_y="bins.MVA_nSigmaPi" />
+			<Histo name="nHitsFit_MLP" title=";lh; nHitsFit" bins_x="bins.likelihood" bins_y="bins.MVA_nHitsFit" />
+			<Histo name="dca_MLP" title=";lh; DCA" bins_x="bins.likelihood" bins_y="bins.MVA_DCA" />
+			<Histo name="cell_MLP" title=";lh; cell" bins_x="bins.likelihood" bins_y="bins.MVA_Cell" />
+			<Histo name="module_MLP" title=";lh; module" bins_x="bins.likelihood" bins_y="bins.MVA_Module" />
+			<Histo name="backleg_MLP" title=";lh; backleg" bins_x="bins.likelihood" bins_y="bins.MVA_Backleg" />
+			<!-- MVA -->
 		</histograms>
 
 
-		<TrackFilter>
+		<LowPtTrackFilter>
 			<Range name="pT" min="0" max="0.4" />
 			<Range name="eta" min="-1.0" max="1.0" />
 			<Range name="nSigmaPion" min="-30.5" max="0.0" />
@@ -70,7 +100,18 @@
 			<Range name="nHitsRatio" min="0.52" max="50" />
 			<Range name="nHitsDedx" min="15.0" max="50"/>
 			<Range name="dca" min="0" max="1.0" />
-		</TrackFilter>
+		</LowPtTrackFilter>
+
+		<MtdTrackFilter>
+			<Range name="pT" min="0.8" max="100.0" />
+			<Range name="eta" min="-0.5" max="0.5" />
+			<Range name="nSigmaPion" min="-300.5" max="300.0" />
+			
+			<Range name="nHitsFit" min="15.0" max="50" />
+			<Range name="nHitsRatio" min="0.52" max="50" />
+			<Range name="nHitsDedx" min="15.0" max="50"/>
+			<Range name="dca" min="0" max="3.0" />
+		</MtdTrackFilter>
 
 		 <LowPtMuonFilter url="out/fits.root">
 			<ZbRC sigma="0.014"/>
@@ -83,6 +124,12 @@
 			<Histogram url="./out/fits.root" name="pi_lambda_vs_p" />
 			<Histogram url="./out/fits.root" name="pi_sigma_vs_p" />
 		</LowPtMuonFilter> 
+		<MuonBDTFilter>
+			<weights>./config/TMVAClassification_BDT.weights.xml</weights>
+		</MuonBDTFilter>
+		<MuonMLPFilter>
+			<weights>./config/TMVAClassification_MLP.weights.xml</weights>
+		</MuonMLPFilter>
 	</MPM>
 
 	<bins>
@@ -91,7 +138,22 @@
 		<mBin16L type="l"> 75-80,70-75,65-70,60-65,55-60,50-55,45-50,40-45,35-40,30-35,25-30,20-25,15-20,10-15,5-10,0-5 </mBin16L> 
 		<mMappedCen type="l"> 40-80, , , , , , , ,  </mMappedCen>
 
+		<mass width="0.010" min="0" max="2.5" />
+
 		<zb width="0.0025" min="-0.5" max="0.5" />
+		<likelihood width="0.01" min="-1" max="1" />
+
+		<nMuons width="1" min="0" max="10" />
+
+		<MVA_dY width="1" min="-65" max="65" />
+		<MVA_dZ width="1" min="-100" max="100" />
+		<MVA_dTOF width="0.1" min="-5" max="5" />
+		<MVA_nSigmaPi width="0.05" min="-5" max="5" />
+		<MVA_nHitsFit width="1" min="0" max="50" />
+		<MVA_DCA width="0.05" min="0" max="5.0" />
+		<MVA_Cell width="1" min="0" max="13" />
+		<MVA_Module width="1" min="0" max="10" />
+		<MVA_Backleg width="1" min="0" max="31" />
 		<signal>
 			<Include url="SignalBins.xml" /> 
 		</signal>

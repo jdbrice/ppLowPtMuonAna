@@ -14,6 +14,7 @@
 
 // FemtoDst
 #include "FemtoDstFormat/FemtoTrackProxy.h"
+#include "ZRC/ZbRC.h"
 
 // STL
 #include <map>
@@ -27,6 +28,7 @@ public:
 	HistoBins momentumBins;
 	TFile *fitFile;
 	map<string, shared_ptr<TH1> > parameters;
+	map<string, XmlRange> range;
 
 	LowPtMuonFilter() : zbUtil( 0.014) {}
 	LowPtMuonFilter(XmlConfig &_cfg, string _nodePath) : zbUtil( 0.014) {
@@ -56,13 +58,7 @@ public:
 			parameters[ name ] =  xhisto.getTH1( );
 			LOG_F( INFO, "%s : fit parameter[%s] = %p", p.c_str(), name.c_str(), parameters[ name ].get() );
 		}
-
-
 	}
-
-
-	map<string, XmlRange> range;
-
 
 	double zb( FemtoTrackProxy &_proxy, string center ){
 		double p = _proxy._track->mPt * cosh( _proxy._track->mEta );
@@ -84,10 +80,20 @@ public:
 		double zbMu     = zbUtil.nlTof( "mu", _proxy._btofPid->beta(), p, avgP );
 		double zbPi     = zbUtil.nlTof( "pi", _proxy._btofPid->beta(), p, avgP );
 		
+		if (nullptr == parameters[ "mu_lambda_vs_p" ] || 
+			nullptr == parameters[ "pi_lambda_vs_p" ] ||
+			nullptr == parameters[ "mu_sigma_vs_p" ]  ||
+			nullptr == parameters[ "pi_sigma_vs_p" ]  ){
+			LOG_F( ERROR, "parameter histograms are NULL" );
+			return false;  
+		}
+
 		double lambdaMu = parameters[ "mu_lambda_vs_p" ]->GetBinContent( pBin+1 );
 		double lambdaPi = parameters[ "pi_lambda_vs_p" ]->GetBinContent( pBin+1 );
 		double sigmaMu  = parameters[ "mu_sigma_vs_p" ]->GetBinContent( pBin+1 );
 		double sigmaPi  = parameters[ "pi_sigma_vs_p" ]->GetBinContent( pBin+1 );
+
+		if ( lambdaMu )
 
 		zbMu = (zbMu - lambdaMu) / sigmaMu;
 		zbPi = (zbPi - lambdaPi) / sigmaPi;
