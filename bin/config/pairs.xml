@@ -3,53 +3,16 @@
 	<Task name="MuonPairMaker" type="MuonPairMaker" config="" nodePath="MPM" />
 
 	
-	<mod>PID_</mod>
+	<mod></mod>
 	<MPM>
 		<EventLoop progress="true" />
 		<input>
-			<dst treeName="FemtoDst" url="./mtd_list.lis" splitBy="25"/>
+			<dst treeName="FemtoDst" url="./list.lis" splitBy="25"/>
 		</input>
 
 		<output>
-			<TFile url="out/pairs_{jobIndex}.root" />
+			<TFile url="out/pairs_{mod}_{jobIndex}.root" />
 		</output>
-
-		<!-- 
-			0  = 75-80
-			1  = 70-75
-			2  = 65-70
-			3  = 60-65
-			4  = 55-60
-			5  = 50-55
-			6  = 45-50
-			7  = 40-45
-			8  = 35-40
-			9  = 30-35
-			10 = 25-30
-			11 = 20-25
-			12 = 15-20
-			13 = 10-15
-			14 = 5-10
-			15 = 0-5
-		 -->
-		<CentralityMap>
-			0 :: 0,
-			1 :: 0,
-			2 :: 0,
-			3 :: 0,
-			4 :: 0,
-			5 :: 0,
-			6 :: 0,
-			7 :: 0,
-			8 :: -1,
-			9 :: -1,
-			10 :: -1,
-			11 :: -1,
-			12 :: -2,
-			13 :: -2,
-			14 :: -3,
-			15 :: -3
-		</CentralityMap>
 
 		<histograms>
 			<Histo name="Events" title="# of Events" bins_x="bins.events" />
@@ -60,8 +23,12 @@
 			<Histo name="zb_p_signal" title="; p (GeV/c); 1/#beta " bins_x="bins.signal.mP" bins_y="bins.zb" />
 
 			<Histo name="nTof_vs_nMtd" title=";nMTD; nTOF" bins_x="bins.nMuons" bins_y="bins.nMuons" />
-			<Histo name="uls_pt_mass" title=";M_{#mu#mu} (GeV/c^{2}); p_{T} (GeV/c)" bins_x="bins.mass" bins_y="bins.mass" />
-			<Histo name="ls_pt_mass" title=";M_{#mu#mu} (GeV/c^{2}); p_{T} (GeV/c)" bins_x="bins.mass" bins_y="bins.mass" />
+			<Histo name="nPos_vs_nNeg" title=";nMTD; nTOF" bins_x="bins.nMuons" bins_y="bins.nMuons" />
+			<Histo name="uls_pt_mass" title=";M_{#mu#mu} (GeV/c^{2}); p_{T} (GeV/c)" bins_x="bins.mass" bins_y="bins.pt" />
+			<Histo name="ls_pt_mass" title=";M_{#mu#mu} (GeV/c^{2}); p_{T} (GeV/c)" bins_x="bins.mass" bins_y="bins.pt" />
+
+			<Histo name="tof_uls_pt_mass" title=";M_{#mu#mu} (GeV/c^{2}); p_{T} (GeV/c)" bins_x="bins.mass" bins_y="bins.pt" />
+			<Histo name="tof_ls_pt_mass" title=";M_{#mu#mu} (GeV/c^{2}); p_{T} (GeV/c)" bins_x="bins.mass" bins_y="bins.pt" />
 
 			<!-- MVA -->
 			<Histo name="BDT" title="BDT; likelihood;" bins_x="bins.likelihood" />
@@ -92,11 +59,12 @@
 
 
 		<LowPtTrackFilter>
+			<Range name="p" min="0" max="0.38" />
 			<Range name="pT" min="0" max="0.4" />
 			<Range name="eta" min="-1.0" max="1.0" />
 			<Range name="nSigmaPion" min="-30.5" max="0.0" />
 			
-			<Range name="nHitsFit" min="25.0" max="50" />
+			<Range name="nHitsFit" min="15.0" max="50" />
 			<Range name="nHitsRatio" min="0.52" max="50" />
 			<Range name="nHitsDedx" min="15.0" max="50"/>
 			<Range name="dca" min="0" max="1.0" />
@@ -110,13 +78,13 @@
 			<Range name="nHitsFit" min="15.0" max="50" />
 			<Range name="nHitsRatio" min="0.52" max="50" />
 			<Range name="nHitsDedx" min="15.0" max="50"/>
-			<Range name="dca" min="0" max="3.0" />
+			<Range name="dca" min="0" max="1.0" />
 		</MtdTrackFilter>
 
 		 <LowPtMuonFilter url="out/fits.root">
 			<ZbRC sigma="0.014"/>
 			<Range name="nSigmaMu" min="-3" max="3" />
-			<Range name="nSigmaPi" min="-10" max="10" />
+			<Range name="nSigmaPi" min="-7.5" max="5" />
 			<MomentumBins>bins.signal.mP</MomentumBins>
 			
 			<Histogram url="./out/fits.root" name="mu_lambda_vs_p" />
@@ -138,7 +106,9 @@
 		<mBin16L type="l"> 75-80,70-75,65-70,60-65,55-60,50-55,45-50,40-45,35-40,30-35,25-30,20-25,15-20,10-15,5-10,0-5 </mBin16L> 
 		<mMappedCen type="l"> 40-80, , , , , , , ,  </mMappedCen>
 
-		<mass width="0.010" min="0" max="2.5" />
+		<!-- <mass>0.0, 0.21, 0.25, 0.3, 0.32, 0.34, 0.36, 0.38, 0.4, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5, 0.54, 0.55, 0.56, 0.57, 0.6, 0.68, 0.7, 0.74, 0.76, 0.78, 0.8, 0.82, 0.9, 0.95, 1.0, 1.02, 1.04, 1.06, 1.2, 1.4, 1.8, 2.0, 2.25 2.5, 3.0, 3.2, 3.5</mass> -->
+		<mass width="0.010" min="0" max="3.5" />
+		<pt width="0.010" min="0" max="5" />
 
 		<zb width="0.0025" min="-0.5" max="0.5" />
 		<likelihood width="0.01" min="-1" max="1" />

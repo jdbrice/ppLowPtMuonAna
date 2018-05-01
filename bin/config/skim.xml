@@ -8,50 +8,12 @@
 	<FDS>
 		<EventLoop progress="true" />
 		<input>
-			<dst treeName="FemtoDst" url="./list.lis" splitBy="2" />
+			<dst treeName="FemtoDst" url="./list.lis" splitBy="50" />
 		</input>
 
 		<output>
 			<TFile url="out/data_{jobIndex}.root" />
 		</output>
-
-		<!-- 
-			0  = 75-80
-			1  = 70-75
-			2  = 65-70
-			3  = 60-65
-			4  = 55-60
-			5  = 50-55
-			6  = 45-50
-			7  = 40-45
-			8  = 35-40
-			9  = 30-35
-			10 = 25-30
-			11 = 20-25
-			12 = 15-20
-			13 = 10-15
-			14 = 5-10
-			15 = 0-5
-
-		 -->
-		<CentralityMap>
-			0 :: 0,
-			1 :: 0,
-			2 :: 0,
-			3 :: 0,
-			4 :: 0,
-			5 :: 0,
-			6 :: 0,
-			7 :: 0,
-			8 :: -1,
-			9 :: -1,
-			10 :: -1,
-			11 :: -1,
-			12 :: -2,
-			13 :: -2,
-			14 :: -3,
-			15 :: -3
-		</CentralityMap>
 
 		<histograms>
 			<Histo name="Events" title="# of Events" bins_x="bins.events" />
@@ -73,14 +35,14 @@
 
 
 		<TrackFilter>
-			<Range name="pT" min="0" max="0.4" />
+			<Range name="pT" min="0" max="0.35" />
 			<Range name="eta" min="-1.0" max="1.0" />
 			<Range name="nSigmaPion" min="-30.5" max="0.0" />
 			
 			<Range name="nHitsFit" min="25.0" max="50" />
 			<Range name="nHitsRatio" min="0.52" max="50" />
 			<Range name="nHitsDedx" min="15.0" max="50"/>
-			<Range name="dca" min="0" max="1.0" />
+			<Range name="dca" min="0" max="3.0" />
 		</TrackFilter>
 	</FDS>
 
@@ -97,7 +59,7 @@
 		<signal_mP width="0.005" min="0.160" max="0.4" />
 		<signal_mEta width="0.25" min="-1.0" max="1.0" />
 		<signal_cen width="1" min="0" max="4" />
-		<zd width="0.05" min="-5" max="0.1" />
+		<zd width="0.1" min="-5" max="1" />
 		<zb width="0.0025" min="-0.5" max="0.5" />
 
 		<yLocal width="0.05" min="-5" max="5" />

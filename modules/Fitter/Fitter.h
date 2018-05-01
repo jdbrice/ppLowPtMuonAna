@@ -224,6 +224,7 @@ public:
 			
 			reportFit( i, tmf, hproj, xcanvas );
 			r->savePage();
+			r->saveImage( "plot_fit_and_ratio_" + ts(i) + ".pdf" );
 			if ( 5 == i ){
 				r->saveImage( "plots.C" );
 			}

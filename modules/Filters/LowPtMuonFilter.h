@@ -93,7 +93,7 @@ public:
 		double sigmaMu  = parameters[ "mu_sigma_vs_p" ]->GetBinContent( pBin+1 );
 		double sigmaPi  = parameters[ "pi_sigma_vs_p" ]->GetBinContent( pBin+1 );
 
-		if ( lambdaMu )
+		// if ( lambdaMu )
 
 		zbMu = (zbMu - lambdaMu) / sigmaMu;
 		zbPi = (zbPi - lambdaPi) / sigmaPi;

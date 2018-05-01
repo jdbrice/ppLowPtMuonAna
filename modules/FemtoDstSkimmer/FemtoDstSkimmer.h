@@ -113,37 +113,16 @@ protected:
 
 		book->cd();
 
-
-		//for ( int iPt = 0; iPt < hbP.nBins(); iPt++ ){
-			for ( int iEta = 0; iEta < hbEta.nBins(); iEta++ ){
-				for ( int iCen = 0; iCen < hbCen.nBins(); iCen++ ){
-					for ( int iCharge : { -1, 1 } ) {
-						string bn = bin_name( iCen, iEta, iCharge );
-						LOG_F( INFO, "Making histo : %s", bn.c_str() );
-
-						book->clone( "zd_p", "zd_p_" + bn );
-						book->clone( "zb_p", "zb_p_" + bn );
-
-						// book->clone( "yLocal_p", "yLocal_p_" + bn );
-						// book->clone( "zLocal_p", "zLocal_p_" + bn );
-					}
-				}
-			}
-		// }
-
 	}
 	virtual void analyzeEvent(){
 	
 		_event = _rEvent.get();
 		book->fill( "Events", 1 );
 
-		book->fill( "mBin16", _event->mBin16 );
-
-		int mappedCen = cMap[ _event->mBin16 ];
-		
-		if ( mappedCen < 0  ) return;
+	
 		size_t nTracks = _rTracks.N();
 		FemtoTrackProxy _proxy;
+
 
 		for (size_t i = 0; i < nTracks; i++ ){
 			_proxy.assemble( i, _rTracks, _rHelices, _rBTofPid );
@@ -151,11 +130,6 @@ protected:
 			if ( nullptr == _proxy._btofPid ) continue;
 
 			if ( _trackFilter.fail( _proxy ) ) continue;
-			if ( trackQA ) thm.analyze( _proxy );
-
-			int iEta = hbEta.findBin( _proxy._track->mEta );
-			if ( iEta < 0 ) continue;
-			string tname = bin_name( mappedCen, iEta, _proxy._track->charge() );
 
 
 			if ( fabs(_proxy._btofPid->yLocal()) > 1.6 ) continue;
@@ -164,10 +138,12 @@ protected:
 			double p = _proxy._track->mPt * cosh( _proxy._track->mEta );
 			double lzb = rTof( 1.0/_proxy._btofPid->beta(), p, 0.105658374 );
 
+
 			int pBin = hbP.findBin( p );
 			if ( pBin < 0 ) continue;
 			double avgP = hbP.bins[ pBin ] + hbP.binWidth( pBin ) / 2.0;
 
+			// LOG_F(  INFO, "p = %f, pBin = %d", p, pBin);
 			double zb = zbUtil.nlTof( "mu", _proxy._btofPid->beta(), p, avgP );
 			// LOG_F( INFO, "p=%f, avgP{bin}=%f", p, avgP );
 
@@ -175,9 +151,6 @@ protected:
 			book->fill( "zb_p", p, zb );
 
 			book->fill( "lzb_p", p, lzb );
-
-			book->fill( "zd_p_" + tname, p, _proxy._track->nSigmaPion() );
-			book->fill( "zb_p_" + tname, p, zb );
 
 			book->fill( "yLocal_p", p, _proxy._btofPid->yLocal() );
 			book->fill( "zLocal_p", p, _proxy._btofPid->zLocal() );

@@ -53,24 +53,24 @@ public:
 		for ( size_t i = 0; i < n; i++ ){
 
 			//TOF + TOF
-			lv1.SetPtEtaPhiM( rnd.Uniform( 0.17, 0.3 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
-			lv2.SetPtEtaPhiM( rnd.Uniform( 0.17, 0.3 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
+			lv1.SetPtEtaPhiM( rnd.Uniform( 0.17, 0.25 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
+			lv2.SetPtEtaPhiM( rnd.Uniform( 0.17, 0.25 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
 			lv = lv1+lv2;
 
 			book->fill( "PS_TOF_TOF", lv.M(), lv.Pt() );
 
 
 			//TOF + MTD
-			lv1.SetPtEtaPhiM( rnd.Uniform( 0.17, 0.3 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
-			lv2.SetPtEtaPhiM( rnd.Uniform( 1.0, 10.0 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
+			lv1.SetPtEtaPhiM( rnd.Uniform( 0.17, 0.25 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
+			lv2.SetPtEtaPhiM( rnd.Uniform( 1.1, 11.0 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
 			lv = lv1+lv2;
 
 			book->fill( "PS_TOF_MTD", lv.M(), lv.Pt() );
 
 
 			//MTD + MTD
-			lv1.SetPtEtaPhiM( rnd.Uniform( 1.0, 10.0 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
-			lv2.SetPtEtaPhiM( rnd.Uniform( 1.0, 10.0 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
+			lv1.SetPtEtaPhiM( rnd.Uniform( 1.1, 11.0 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
+			lv2.SetPtEtaPhiM( rnd.Uniform( 1.1, 11.0 ), rnd.Uniform( -0.5, 0.5 ), rnd.Uniform( -TMath::Pi(), TMath::Pi() ), 0.105 );
 			lv = lv1+lv2;
 
 			book->fill( "PS_MTD_MTD", lv.M(), lv.Pt() );

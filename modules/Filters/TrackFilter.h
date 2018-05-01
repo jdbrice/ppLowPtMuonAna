@@ -46,6 +46,8 @@ public:
 
 		if ( range.count( "pT" ) && !range[ "pT" ].inInclusiveRange( _proxy._track->mPt ) )
 			return false;
+		if ( range.count( "p" ) && !range[ "p" ].inInclusiveRange( _proxy._track->mPt * cosh( _proxy._track->mEta ) ) )
+			return false;
 		if ( range.count( "eta" ) && !range[ "eta" ].inInclusiveRange( _proxy._track->mEta ) )
 			return false;
 		if ( range.count( "nHitsFit" ) && !range[ "nHitsFit" ].inInclusiveRange( abs(_proxy._track->mNHitsFit) ) )

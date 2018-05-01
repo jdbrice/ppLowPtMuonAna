@@ -3,12 +3,12 @@
 	<Task name="PhaseSpaceMC" type="PhaseSpaceMC" config="" nodePath="PhaseSpaceMC" />
 	
 	<p>
-		<N>1000000</N>
+		<N>10000</N>
 	</p>
 
 	<PhaseSpaceMC>
 		<input>
-			<TFile url="out/all.root" />
+			<TFile url="out/data_0.root" />
 		</input>
 
 		<output>

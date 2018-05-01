@@ -3,12 +3,12 @@
 	<Task name="Fitter" type="Fitter" config="" nodePath="Fitter" />
 
 
-	<pi roiLeft="3" roiRight="1"/>
+	<pi roiLeft="3" roiRight="2"/>
 	<mu roiLeft="2" roiRight="1" />
 	
 	<Fitter>
 		<input>
-			<TFile url="out/all.root" />
+			<TFile url="out/data_-1.root" />
 		</input>
 
 		<output>
@@ -16,8 +16,8 @@
 			<TFile url="out/fit_params/xml" name="fit_params" />
 		</output>
 
-		<!-- <Include url="GaussianSchema.xml" /> -->
-		<Include url="PearsonSchema.xml" />
+		<Include url="GaussianSchema.xml" />
+		<!-- <Include url="PearsonSchema.xml" /> -->
 
 		<histograms>
 		</histograms>
