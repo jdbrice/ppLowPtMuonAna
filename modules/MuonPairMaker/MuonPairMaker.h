@@ -152,9 +152,9 @@ protected:
 			}
 			
 			if ( _mtdTrackFilter.pass( _proxy ) &&  _proxy._track->mMtdPidTraitsIndex >= 0
-				&& fabs(_proxy._mtdPid->mDeltaY) < 10
-				&& fabs(_proxy._mtdPid->mDeltaZ) < 10
-				&& fabs(_proxy._mtdPid->mDeltaTimeOfFlight) < 0.5
+				&& fabs(_proxy._mtdPid->mDeltaY) < 15
+				&& fabs(_proxy._mtdPid->mDeltaZ) < 15
+				&& fabs(_proxy._mtdPid->mDeltaTimeOfFlight) < 0.75
 				){
 
 				// DeltaZ > 60 is HACK until new MC is trained
